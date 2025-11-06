@@ -1,0 +1,79 @@
+/* Smart Study Planner — WIP styles (half-done)
+   NOTE: This stylesheet is intentionally minimal to look mid-build.
+   TODO: dark mode, mobile tweaks for small cards, better table overflow.
+*/
+:root{
+  --bg: #0f172a;        /* slate-900 */
+  --panel: #111827;     /* gray-900 */
+  --muted: #94a3b8;     /* slate-400 */
+  --text: #e5e7eb;      /* gray-200 */
+  --accent: #38bdf8;    /* sky-400 */
+  --accent-2: #a78bfa;  /* violet-400 */
+  --ring: rgba(56,189,248,.35);
+  --border: #1f2937;    /* gray-800 */
+}
+
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; height:100%; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; }
+
+.topbar{
+  position: sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px; background:linear-gradient(180deg, #0b1223, #0f172a);
+  border-bottom:1px solid var(--border);
+}
+.topbar h1{ font-size:20px; margin:0; letter-spacing:.4px; }
+.wip-tag{ font-weight:600; color:var(--accent); font-size:14px; }
+
+.nav button{
+  background:#0b1223; color:var(--text); border:1px solid var(--border); padding:8px 12px; border-radius:10px; cursor:pointer;
+}
+.nav button.active{ outline:2px solid var(--ring); }
+.nav button + button{ margin-left:8px; }
+
+.view{ display:none; padding:24px; }
+.view.active{ display:block; }
+
+.grid{
+  display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; align-items:start;
+}
+.card{
+  grid-column: span 6;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.card h2{ margin-top:0; font-size:18px; }
+
+@media (max-width: 960px){
+  .card{ grid-column: span 12; }
+}
+
+.stats{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+.stat{ background:#0b1223; border:1px dashed var(--border); border-radius:12px; padding:12px; }
+.stat-label{ color:var(--muted); font-size:12px; }
+.stat-value{ font-size:22px; font-weight:700; }
+
+.form .row{ margin-bottom:12px; }
+.form .row.two{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+input, textarea, select, button{
+  width:100%; background:#0b1223; color:var(--text); border:1px solid var(--border);
+  border-radius:10px; padding:10px 12px; outline:none;
+}
+input:focus, textarea:focus, select:focus{ border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
+button{ background: linear-gradient(180deg, #111827, #0b1223); cursor:pointer; }
+button:hover{ border-color: var(--accent-2); }
+
+.table{ width:100%; border-collapse: collapse; }
+.table th, .table td{ text-align:left; padding:10px; border-bottom:1px solid var(--border); }
+.table tbody tr:hover{ background:#0b1223; }
+
+.muted{ color: var(--muted); }
+.small{ font-size:12px; }
+
+.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.5); padding:20px; }
+.modal .modal-content{ background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px; max-width:720px; }
+.modal.show{ display:flex; }
+.modal-close{ position:absolute; right:20px; top:12px; width:auto; }

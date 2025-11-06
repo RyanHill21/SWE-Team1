@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Study Planner — WIP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Smart Study Planner <span class="wip-tag">— work in progress</span></h1>
+    <nav class="nav">
+      <button id="btn-dashboard" class="active">Dashboard</button>
+      <button id="btn-assignments">Assignments</button>
+      <button id="btn-about">About</button>
+    </nav>
+  </header>
+
+  <main id="view-dashboard" class="view active">
+    <section class="grid">
+      <div class="card">
+        <h2>Quick Stats</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Total Study Time</div>
+            <div class="stat-value" id="stat-total">0h</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Sessions This Week</div>
+            <div class="stat-value" id="stat-week">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Avg Focus</div>
+            <div class="stat-value" id="stat-focus">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Log Study Session</h2>
+        <form id="session-form" class="form">
+          <div class="row">
+            <label>Course</label>
+            <input type="text" id="course" placeholder="e.g., COSC 412" required />
+          </div>
+          <div class="row two">
+            <div>
+              <label>Minutes</label>
+              <input type="number" id="minutes" min="5" step="5" placeholder="50" required />
+            </div>
+            <div>
+              <label>Focus (1–5)</label>
+              <input type="number" id="focus" min="1" max="5" value="3" />
+            </div>
+          </div>
+          <div class="row">
+            <label>Notes (optional)</label>
+            <textarea id="notes" rows="2" placeholder="Ch. 7 practice problems…"></textarea>
+          </div>
+          <div class="row">
+            <button type="submit">Add Session</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Sessions</h2>
+        <table class="table" id="sessions-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Course</th>
+              <th>Minutes</th>
+              <th>Focus</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected by JS --></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>AI Insights (Prototype)</h2>
+        <div id="insights" class="insights">
+          <p class="muted">Early prototype. Insights will get smarter as we add more data.</p>
+          <button id="btn-refresh-insights">Refresh Suggestions</button>
+          <ul id="insights-list"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Progress (Coming Soon)</h2>
+        <canvas id="progress-chart" width="600" height="240"></canvas>
+        <p class="muted small">
+          TODO: replace with a real chart library and show weekly totals per course.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <main id="view-assignments" class="view">
+    <section class="grid">
+      <div class="card">
+        <h2>Assignments (MVP backlog)</h2>
+        <p class="muted">This part is only scaffolded. Add, edit, and due-date tracking to be wired up.</p>
+        <form id="assignment-form" class="form">
+          <div class="row two">
+            <div>
+              <label>Title</label>
+              <input type="text" id="as-title" placeholder="Project 2 draft" />
+            </div>
+            <div>
+              <label>Course</label>
+              <input type="text" id="as-course" placeholder="COSC 412" />
+            </div>
+          </div>
+          <div class="row two">
+            <div>
+              <label>Due Date</label>
+              <input type="date" id="as-due" />
+            </div>
+            <div>
+              <label>Estimated Hours</label>
+              <input type="number" id="as-hours" min="1" step="1" />
+            </div>
+          </div>
+          <button id="btn-add-asn" type="button">Add (stub)</button>
+        </form>
+
+        <table class="table" id="assignments-table">
+          <thead>
+          <tr><th>Title</th><th>Course</th><th>Due</th><th>Est.</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+          <!-- TODO: render actual assignments from storage -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="about-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="about-close">×</button>
+      <h2>About the Project</h2>
+      <p>
+        Our product is a web-based application designed to help students efficiently manage and improve their
+        studying habits. It provides a dashboard where users can log study sessions, monitor their progress
+        over time, and receive personal insights to boost productivity.
+      </p>
+      <p>
+        The app targets students who struggle with time management, balancing multiple classes, jobs, and
+        extracurriculars. We address inconsistent study habits, poor scheduling, and low motivation by
+        providing user analytics, progress tracking, and study recommendations.
+      </p>
+      <p>
+        Competitors include paper planners and apps like Athenify, MyStudyLife, and Trello. Our differentiator is
+        AI-driven tips & strategies based on real usage. <em>This is a WIP; AI calls are stubbed out with TODOs.</em>
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
