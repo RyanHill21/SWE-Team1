@@ -1,4 +1,4 @@
-# Smart Study Planner (WIP)
+# Smart Study Planner 
 
 This is a **half-done** front-end prototype for a study planner. It logs study sessions to `localStorage`, shows basic stats, and has **stubbed** AI insights & assignments.
 
