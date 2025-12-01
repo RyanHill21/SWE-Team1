@@ -74,6 +74,14 @@ el('#session-form').addEventListener('submit', (e)=>{
   el('#session-form').reset();
 });
 
+function prioitizeschedule(assignments)
+  return assignments.slice().sort((a, b) => {
+  const dateDiff = new Date(a.due) - new Date(b.due);
+  const diffDiff = (b.difficulty || 0) - (a.difficulty || 0);
+  return dateDiff || diffDiff;
+  });
+}
+
 function deleteSession(id){
   sessions = sessions.filter(s => s.id !== id);
   save(STORAGE_KEYS.sessions, sessions);
