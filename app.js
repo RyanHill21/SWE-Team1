@@ -74,7 +74,7 @@ el('#session-form').addEventListener('submit', (e)=>{
   el('#session-form').reset();
 });
 
-function prioitizeTasks(assignments){
+function prioritizeTasks(assignments){
   return assignments.slice().sort((a, b) => {
   const dateDiff = new Date(a.due) - new Date(b.due);
   const diffDiff = (b.difficulty || 0) - (a.difficulty || 0);
@@ -95,8 +95,8 @@ function generateSchedule() {
   scheduleList.innerHTML = '';
   
   sortedAssignments.forEach(task => {
-    const innerHTML = document.createElement('li');
-    innerHTMl.textContent = `${task.course}: ${task.title} — ${task.estimatedMinutes || 50} min`;
+    const li = document.createElement('li');
+    li.textContent = `${task.course}: ${task.title} — ${task.estimatedMinutes || 50} min`;
     scheduleList.appendChild(li);
   });
 }
