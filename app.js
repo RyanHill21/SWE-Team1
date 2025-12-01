@@ -82,6 +82,25 @@ function prioitizeTasks(assignments){
   });
 }
 
+el('#btn-auto-schedule').addEventListener('click', generateSchedule);
+function generateSchedule() {
+  if(assignments.length === 0){
+    alert('No assignments to schedule!');
+    return;
+  }
+
+  const sortedAssignments = prioritizeTasks(assignments);
+
+  const scheduleList = el('#schedule-list');
+  scheduleList.innerHTML = '';
+  
+  sortedAssignments.forEach(task => {
+    const innerHTML = document.createElement('li');
+    innerHTMl.textContent = `${task.course}: ${task.title} — ${task.estimatedMinutes || 50} min`;
+    scheduleList.appendChild(li);
+  });
+}
+
 function deleteSession(id){
   sessions = sessions.filter(s => s.id !== id);
   save(STORAGE_KEYS.sessions, sessions);
