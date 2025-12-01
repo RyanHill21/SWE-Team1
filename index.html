@@ -6,18 +6,25 @@
   <title>Smart Study Planner — WIP</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="topbar">
     <h1>Smart Study Planner <span class="wip-tag">— work in progress</span></h1>
+
     <nav class="nav">
       <button id="btn-dashboard" class="active">Dashboard</button>
-      <button id="btn-assignments">Assignments</button>
+      <button id="btn-assignments">To-Do List</button>
+      <button id="btn-progress">Progress</button>
+      <button id="btn-calendar">Calendar</button>
       <button id="btn-about">About</button>
     </nav>
   </header>
 
+  <!-- DASHBOARD VIEW -->
   <main id="view-dashboard" class="view active">
     <section class="grid">
+
+      <!-- QUICK STATS -->
       <div class="card">
         <h2>Quick Stats</h2>
         <div class="stats">
@@ -36,6 +43,7 @@
         </div>
       </div>
 
+      <!-- LOG SESSION -->
       <div class="card">
         <h2>Log Study Session</h2>
         <form id="session-form" class="form">
@@ -43,6 +51,7 @@
             <label>Course</label>
             <input type="text" id="course" placeholder="e.g., COSC 412" required />
           </div>
+
           <div class="row two">
             <div>
               <label>Minutes</label>
@@ -53,18 +62,19 @@
               <input type="number" id="focus" min="1" max="5" value="3" />
             </div>
           </div>
+
           <div class="row">
             <label>Notes (optional)</label>
             <textarea id="notes" rows="2" placeholder="Ch. 7 practice problems…"></textarea>
           </div>
-          <div class="row">
-            <button type="submit">Add Session</button>
-          </div>
+
+          <button type="submit">Add Session</button>
         </form>
       </div>
 
+      <!-- SESSION TABLE -->
       <div class="card">
-        <h2>Sessions</h2>
+        <h2>Recent Sessions</h2>
         <table class="table" id="sessions-table">
           <thead>
             <tr>
@@ -76,88 +86,142 @@
               <th></th>
             </tr>
           </thead>
-          <tbody><!-- rows injected by JS --></tbody>
+          <tbody></tbody>
         </table>
       </div>
 
+      <!-- AI INSIGHTS -->
       <div class="card">
         <h2>AI Insights (Prototype)</h2>
-        <div id="insights" class="insights">
-          <p class="muted">Early prototype. Insights will get smarter as we add more data.</p>
-          <button id="btn-refresh-insights">Refresh Suggestions</button>
-          <ul id="insights-list"></ul>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Progress (Coming Soon)</h2>
-        <canvas id="progress-chart" width="600" height="240"></canvas>
-        <p class="muted small">
-          TODO: replace with a real chart library and show weekly totals per course.
-        </p>
+        <button id="btn-refresh-insights">Refresh Suggestions</button>
+        <ul id="insights-list"></ul>
       </div>
     </section>
   </main>
 
+  <!-- TO-DO LIST VIEW -->
   <main id="view-assignments" class="view">
     <section class="grid">
       <div class="card">
-        <h2>Assignments (MVP backlog)</h2>
-        <p class="muted">This part is only scaffolded. Add, edit, and due-date tracking to be wired up.</p>
-        <form id="assignment-form" class="form">
-          <div class="row two">
-            <div>
-              <label>Title</label>
-              <input type="text" id="as-title" placeholder="Project 2 draft" />
-            </div>
-            <div>
-              <label>Course</label>
-              <input type="text" id="as-course" placeholder="COSC 412" />
-            </div>
-          </div>
-          <div class="row two">
-            <div>
-              <label>Due Date</label>
-              <input type="date" id="as-due" />
-            </div>
-            <div>
-              <label>Estimated Hours</label>
-              <input type="number" id="as-hours" min="1" step="1" />
-            </div>
-          </div>
-          <button id="btn-add-asn" type="button">Add (stub)</button>
-        </form>
+        <h2>To-Do List</h2>
 
-        <table class="table" id="assignments-table">
+        <button id="btn-open-task-modal">Add Task</button>
+
+        <table class="table" id="tasks-table">
           <thead>
-          <tr><th>Title</th><th>Course</th><th>Due</th><th>Est.</th><th>Status</th></tr>
+            <tr><th>Title</th><th>Course</th><th>Due</th><th>Priority</th><th>Status</th><th></th></tr>
           </thead>
-          <tbody>
-          <!-- TODO: render actual assignments from storage -->
-          </tbody>
+          <tbody></tbody>
         </table>
       </div>
     </section>
   </main>
 
+  <!-- PROGRESS OVERVIEW PAGE -->
+  <main id="view-progress" class="view">
+    <section class="grid">
+      <div class="card">
+        <h2>Your Study Progress</h2>
+
+        <canvas id="progress-chart" width="600" height="260"></canvas>
+
+        <p class="muted small">
+          Weekly study breakdown. (A real chart will replace this placeholder.)
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Weekly Minutes</div>
+            <div class="stat-value" id="progress-weekly">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Tasks Completed</div>
+            <div class="stat-value" id="progress-tasks">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Sessions Completed</div>
+            <div class="stat-value" id="progress-sessions">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CALENDAR CONNECTION UI -->
+  <main id="view-calendar" class="view">
+    <section class="grid">
+      <div class="card">
+        <h2>Calendar Integration</h2>
+
+        <p class="muted">Sync assignments and study sessions with your calendar.</p>
+
+        <button id="btn-google-connect">Connect Google Calendar</button>
+        <button id="btn-outlook-connect">Connect Outlook Calendar</button>
+
+        <h3>Synced Events</h3>
+        <ul id="calendar-event-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ABOUT MODAL -->
   <div id="about-modal" class="modal">
     <div class="modal-content">
       <button class="modal-close" id="about-close">×</button>
       <h2>About the Project</h2>
       <p>
-        Our product is a web-based application designed to help students efficiently manage and improve their
-        studying habits. It provides a dashboard where users can log study sessions, monitor their progress
-        over time, and receive personal insights to boost productivity.
+        Smart Study Planner helps students build better habits, track sessions,
+        and receive meaningful study insights.
       </p>
       <p>
-        The app targets students who struggle with time management, balancing multiple classes, jobs, and
-        extracurriculars. We address inconsistent study habits, poor scheduling, and low motivation by
-        providing user analytics, progress tracking, and study recommendations.
+        Future additions: AI-driven planning, deeper analytics, cloud sync,
+        real calendar integration, and mobile polish.
       </p>
-      <p>
-        Competitors include paper planners and apps like Athenify, MyStudyLife, and Trello. Our differentiator is
-        AI-driven tips & strategies based on real usage. <em>This is a WIP; AI calls are stubbed out with TODOs.</em>
-      </p>
+    </div>
+  </div>
+
+  <!-- TASK EDIT MODAL -->
+  <div id="task-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="task-close">×</button>
+      <h2 id="task-modal-title">Add Task</h2>
+
+      <form id="task-form" class="form">
+        <div class="row">
+          <label>Title</label>
+          <input type="text" id="task-title" required>
+        </div>
+
+        <div class="row">
+          <label>Course</label>
+          <input type="text" id="task-course">
+        </div>
+
+        <div class="row two">
+          <div>
+            <label>Due Date</label>
+            <input type="date" id="task-due">
+          </div>
+          <div>
+            <label>Priority</label>
+            <select id="task-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Status</label>
+          <select id="task-status">
+            <option value="pending">Pending</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+
+        <button type="submit">Save Task</button>
+      </form>
     </div>
   </div>
 
