@@ -74,7 +74,7 @@ el('#session-form').addEventListener('submit', (e)=>{
   el('#session-form').reset();
 });
 
-function prioitizeschedule(assignments){
+function prioitizeTasks(assignments){
   return assignments.slice().sort((a, b) => {
   const dateDiff = new Date(a.due) - new Date(b.due);
   const diffDiff = (b.difficulty || 0) - (a.difficulty || 0);
