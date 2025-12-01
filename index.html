@@ -8,6 +8,10 @@
 </head>
 
 <body>
+
+  <!-- ====================================== -->
+  <!-- TOP NAVIGATION BAR -->
+  <!-- ====================================== -->
   <header class="topbar">
     <h1>Smart Study Planner <span class="wip-tag">— work in progress</span></h1>
 
@@ -16,11 +20,80 @@
       <button id="btn-assignments">To-Do List</button>
       <button id="btn-progress">Progress</button>
       <button id="btn-calendar">Calendar</button>
+      <button id="btn-profile">Profile</button>
+      <button id="btn-settings">Settings</button>
       <button id="btn-about">About</button>
+      <button id="btn-logout">Logout</button>
     </nav>
   </header>
 
-  <!-- DASHBOARD VIEW -->
+
+  <!-- ====================================== -->
+  <!-- LOGIN / SIGNUP SECTION -->
+  <!-- ====================================== -->
+
+  <main id="view-login" class="view">
+    <section class="auth-container">
+      <div class="card auth-card">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="row">
+            <label>Email</label>
+            <input type="email" id="login-email" required />
+          </div>
+
+          <div class="row">
+            <label>Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+
+          <button type="submit">Login</button>
+        </form>
+
+        <p class="muted small">
+          Don’t have an account? <a id="link-signup">Sign Up</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <main id="view-signup" class="view">
+    <section class="auth-container">
+      <div class="card auth-card">
+        <h2>Create Account</h2>
+
+        <form id="signup-form">
+          <div class="row">
+            <label>Username</label>
+            <input type="text" id="signup-username" required />
+          </div>
+
+          <div class="row">
+            <label>Email</label>
+            <input type="email" id="signup-email" required />
+          </div>
+
+          <div class="row">
+            <label>Password</label>
+            <input type="password" id="signup-password" required />
+          </div>
+
+          <button type="submit">Sign Up</button>
+        </form>
+
+        <p class="muted small">
+          Already registered? <a id="link-login">Login</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+
+
+  <!-- ====================================== -->
+  <!-- DASHBOARD SECTION -->
+  <!-- ====================================== -->
+
   <main id="view-dashboard" class="view active">
     <section class="grid">
 
@@ -65,14 +138,14 @@
 
           <div class="row">
             <label>Notes (optional)</label>
-            <textarea id="notes" rows="2" placeholder="Ch. 7 practice problems…"></textarea>
+            <textarea id="notes" rows="2"></textarea>
           </div>
 
           <button type="submit">Add Session</button>
         </form>
       </div>
 
-      <!-- SESSION TABLE -->
+      <!-- RECENT SESSIONS -->
       <div class="card">
         <h2>Recent Sessions</h2>
         <table class="table" id="sessions-table">
@@ -90,16 +163,85 @@
         </table>
       </div>
 
-      <!-- AI INSIGHTS -->
+      <!-- AI RECOMMENDATIONS -->
       <div class="card">
-        <h2>AI Insights (Prototype)</h2>
+        <h2>Recommended Study Tips</h2>
         <button id="btn-refresh-insights">Refresh Suggestions</button>
         <ul id="insights-list"></ul>
+      </div>
+
+    </section>
+
+    <!-- Auto Schedule -->
+    <div class="card">
+      <h2>Auto Schedule</h2>
+      <button id="btn-auto-schedule">Generate Optimal Schedule</button>
+    </div>
+
+    <div class="card">
+      <h2>Suggested Study Schedule</h2>
+      <ul id="schedule-list"></ul>
+    </div>
+
+  </main>
+
+
+
+  <!-- ====================================== -->
+  <!-- PROFILE PAGE (User Account Info) -->
+  <!-- ====================================== -->
+
+  <main id="view-profile" class="view">
+    <section class="grid">
+      <div class="card">
+        <h2>User Profile</h2>
+
+        <p><strong>Username:</strong> <span id="profile-username">—</span></p>
+        <p><strong>Email:</strong> <span id="profile-email">—</span></p>
+        <p><strong>Member Since:</strong> <span id="profile-created">—</span></p>
+
+        <button id="btn-edit-profile">Edit Profile</button>
       </div>
     </section>
   </main>
 
-  <!-- TO-DO LIST VIEW -->
+
+
+  <!-- ====================================== -->
+  <!-- SETTINGS PAGE (Notification Settings) -->
+  <!-- ====================================== -->
+
+  <main id="view-settings" class="view">
+    <section class="grid">
+      <div class="card">
+        <h2>Notification Settings</h2>
+
+        <div class="row">
+          <label>Enable Session Reminders</label>
+          <input type="checkbox" id="notif-session" />
+        </div>
+
+        <div class="row">
+          <label>Enable Task Reminders</label>
+          <input type="checkbox" id="notif-task" />
+        </div>
+
+        <div class="row">
+          <label>Daily Summary Time</label>
+          <input type="time" id="notif-daily-time" />
+        </div>
+
+        <button id="btn-save-settings">Save Settings</button>
+      </div>
+    </section>
+  </main>
+
+
+
+  <!-- ====================================== -->
+  <!-- TO-DO LIST PAGE -->
+  <!-- ====================================== -->
+
   <main id="view-assignments" class="view">
     <section class="grid">
       <div class="card">
@@ -117,7 +259,12 @@
     </section>
   </main>
 
-  <!-- PROGRESS OVERVIEW PAGE -->
+
+
+  <!-- ====================================== -->
+  <!-- PROGRESS PAGE -->
+  <!-- ====================================== -->
+
   <main id="view-progress" class="view">
     <section class="grid">
       <div class="card">
@@ -125,9 +272,7 @@
 
         <canvas id="progress-chart" width="600" height="260"></canvas>
 
-        <p class="muted small">
-          Weekly study breakdown. (A real chart will replace this placeholder.)
-        </p>
+        <p class="muted small">Weekly study breakdown.</p>
 
         <div class="stats">
           <div class="stat">
@@ -147,7 +292,12 @@
     </section>
   </main>
 
-  <!-- CALENDAR CONNECTION UI -->
+
+
+  <!-- ====================================== -->
+  <!-- CALENDAR INTEGRATION -->
+  <!-- ====================================== -->
+
   <main id="view-calendar" class="view">
     <section class="grid">
       <div class="card">
@@ -164,23 +314,20 @@
     </section>
   </main>
 
-  <!-- ABOUT MODAL -->
+
+
+  <!-- ====================================== -->
+  <!-- EXISTING MODALS (Task + About) -->
+  <!-- ====================================== -->
+
   <div id="about-modal" class="modal">
     <div class="modal-content">
       <button class="modal-close" id="about-close">×</button>
       <h2>About the Project</h2>
-      <p>
-        Smart Study Planner helps students build better habits, track sessions,
-        and receive meaningful study insights.
-      </p>
-      <p>
-        Future additions: AI-driven planning, deeper analytics, cloud sync,
-        real calendar integration, and mobile polish.
-      </p>
+      <p>Smart Study Planner helps students build better habits and receive meaningful study insights.</p>
     </div>
   </div>
 
-  <!-- TASK EDIT MODAL -->
   <div id="task-modal" class="modal">
     <div class="modal-content">
       <button class="modal-close" id="task-close">×</button>
@@ -225,6 +372,9 @@
     </div>
   </div>
 
+
+  <!-- JS -->
   <script src="app.js"></script>
+
 </body>
 </html>

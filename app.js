@@ -74,6 +74,33 @@ el('#session-form').addEventListener('submit', (e)=>{
   el('#session-form').reset();
 });
 
+function prioritizeTasks(assignments){
+  return assignments.slice().sort((a, b) => {
+  const dateDiff = new Date(a.due) - new Date(b.due);
+  const diffDiff = (b.difficulty || 0) - (a.difficulty || 0);
+  return dateDiff || diffDiff;
+  });
+}
+
+el('#btn-auto-schedule').addEventListener('click', generateSchedule);
+function generateSchedule() {
+  if(assignments.length === 0){
+    alert('No assignments to schedule!');
+    return;
+  }
+
+  const sortedAssignments = prioritizeTasks(assignments);
+
+  const scheduleList = el('#schedule-list');
+  scheduleList.innerHTML = '';
+  
+  sortedAssignments.forEach(task => {
+    const li = document.createElement('li');
+    li.textContent = `${task.course}: ${task.title} — ${task.estimatedMinutes || 50} min`;
+    scheduleList.appendChild(li);
+  });
+}
+
 function deleteSession(id){
   sessions = sessions.filter(s => s.id !== id);
   save(STORAGE_KEYS.sessions, sessions);
