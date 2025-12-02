@@ -5,8 +5,8 @@ const CourseSchema = new Schema({
     title: { type: String, required: true},
     instructor: { type: String},
     creditHours: { type: Number, default: 0},
-    userID: { type: Schema.Types.objectID, ref: 'User', required: true },
-    createdAt: { type: Date, default: DataTransfer.now }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    createdAt: { type: Date, default: Date.now }
 });
 
-MediaSourceHandle.exports = mongoose.model('Course', CourseSchema);
+module.exports = mongoose.model('Course', CourseSchema);

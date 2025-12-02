@@ -1,7 +1,7 @@
-import StudySession from "../models/StudySession.js";
+const StudySession = require("../models/StudySession.js");
 
 //create new study session
-export const createSession = async (req, res) => {
+const createSession = async (req, res) => {
     const {courseId, startTime, endTime, difficulty } = req.body;
     const userId = req.user.id;
 
@@ -30,8 +30,8 @@ export const createSession = async (req, res) => {
     const newSession = await StudySession.create({
         courseId,
         userId,
-        startTime,
-        endTime,
+        startTime: start,
+        endTime: end,
         difficulty,
         completed: false
     });
@@ -40,7 +40,7 @@ export const createSession = async (req, res) => {
 };
 
 //Getting all session for user
-export const getSessions = async (req, res) => {
+const getSessions = async (req, res) => {
     const userId = req.user.id;
     const sessions = await StudySession.find({ userId });
     res.json({ succes: true, data: sessions });
@@ -48,7 +48,7 @@ export const getSessions = async (req, res) => {
 
 //Update a study session
 
-export const updateSession = async (req, res) => {
+const updateSession = async (req, res) => {
     const userId = req.user.id;
     const sesssionId = req.params.id;
 
@@ -67,7 +67,7 @@ export const updateSession = async (req, res) => {
 
 //Delete a session
 
-export const deleteSession = async (req, res) => {
+const deleteSession = async (req, res) => {
     const userId = req.user.id;
     const sessionId = req.params.id;
 
@@ -81,4 +81,11 @@ export const deleteSession = async (req, res) => {
     }
 
     res.json({ success: true, message: "Session deleted successfully." });
+};
+
+module.exports = {
+    createSession,
+    getSessions,
+    updateSession,
+    deleteSession
 };

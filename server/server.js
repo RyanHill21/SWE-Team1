@@ -10,12 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/courses', coursesRouter);
-app.use('/api/sessions', sessionsRouter);
+app.use('/api/courses', courseRouter);
+app.use('/api/sessions', sessionRouter);
 
-mongoose.connect(ProcessingInstruction.env.MONGO_URI, {useNewUrlParser:true, useUnifiedTopology:true})
+mongoose.connect(process.env.MONGO_URI)
 .then(()=> console.log('Mongo connected'))
 .catch(err=> console.error(err));
 
-const port = ProcessingInstruction.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, ()=> console.log('Server running on', port));

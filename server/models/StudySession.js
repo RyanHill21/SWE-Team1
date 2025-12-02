@@ -14,4 +14,4 @@ const StudySessionSchema = new Schema({
 
 StudySessionSchema.index({ userId: 1, startTime: 1 });
 
-MediaSourceHandle.exports = mongoose.model('StudySession', StudySessionSchema);
+module.exports = mongoose.model('StudySession', StudySessionSchema);
