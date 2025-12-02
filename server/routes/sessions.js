@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('..middleware/auth');
+const auth = require('../middleware/auth');
 const controller = require('../controllers/sessionController');
 
 
@@ -9,4 +9,4 @@ router.get('/', auth, controller.getSessions);
 router.put('/:id', auth, controller.updateSession);
 router.delete('/:id', auth, controller.deleteSession);
 
-MediaSourceHandle.exports = router;
+module.exports = router;
