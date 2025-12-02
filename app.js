@@ -90,7 +90,6 @@ function generateSchedule() {
   }
 
   const sortedAssignments = prioritizeTasks(assignments);
-
   const scheduleList = el('#schedule-list');
   scheduleList.innerHTML = '';
   
