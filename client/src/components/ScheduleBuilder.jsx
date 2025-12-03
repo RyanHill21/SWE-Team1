@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function ScheduleBuilder() {
     const [courses, setCourses] = useState([]);
-    const [session, setSessions] = useState([]);
+    const [sessions, setSessions] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showEdit, setShowEdit] = useState(false);
     const [editing, setEditing] = useState(null);
@@ -15,19 +15,30 @@ export default function ScheduleBuilder() {
 
     useEffect(()=> {
         fetchCourses();
-        fetchSession();
-        
     }, []);
 
-    const fetchCourses = async (date) => {
-        const q = date ? '?date=${date.toISOString().slice(0,10)}' : '';
-        const res = await API.get('/sessions' + q);
-        setSessions(res.data);
+    const fetchCourses = async () => {
+        try{
+        const res = await API.get('/courses');
+        setCourses(res.data);
+        } catch (err){
+            console.error("Failed to load course", err); 
+        }
     };
 
     useEffect(()=> {
         fetchSessions(selectedDate);
     }, [selectedDate]);
+
+    const fetchSessions = async (date) => {
+        try{
+        const formatted = date.toISOString().slice(0, 10);
+        const res = await API.get(`/sessions?date=${formatted}`);
+        setCourses(res.data);
+        } catch (err){
+            console.error("Failed to load course", err); 
+        }
+    };
 
     const openEdit = (session) => {
         setEditing(session);
@@ -35,35 +46,59 @@ export default function ScheduleBuilder() {
     };
 
     return (
-        <div>
+        <div style={{ padding: 20}}>
             <h2>Schedule Builder</h2>
 
-            <div style={{display:'flex', gap: 20}}>
-                <div style={{flex:1}}>
+            <div style={{display:'flex', gap: 30, marginTop: 20 }}>
+
+                {/* LEFT COLUMN - COURSES */}
+                <div style={{flex:1, borderRight: "1px solid #ccc", paddingRight: 20 }}>
                     <h4>Courses</h4>
                     <ul>
-                        {courses.map(c => <li key={c._id}>{c.title}</li>)}
-                    </ul>
-                </div>
-
-                <div style={{flex:2}}>
-                    <h4>Calendar</h4>
-                    <label>Choose day:</label><br/>
-                    <DatePicker selected={selectedDate} onChange={d=>setSelectedDate(d)} />
-                    <h5>Session on {selectedDate.toDateString()}</h5>
-                    <ul>
-                        {sessionStorage.map(s => (
-                            <li key={s._id}>
-                                {s.courseId?.title || 'No course'} - {s.topic || 'No topic'} -
-                                {new Date(s.startTime).toLocaleTimeString()} to {new Date(s.endTime).toLocaleTimeString()}
-                                <button onClick={()=>openEdit(s)}>Edit</button>
-                            </li>
+                        {courses.map(c => (
+                            <li key={c._id}>{c.title}</li>
                         ))}
                     </ul>
                 </div>
+
+                {/*RIGHT COLUMN - SESSIONS BY DAY */}
+
+                <div style={{flex:2}}>
+                    <label>Choose Day:</label>
+                    <DatePicker 
+                        selected={selectedDate} 
+                        onChange={d=>setSelectedDate(d)} 
+                    />
+
+
+                    <h5 style={{ marginTop: 20 }}>
+                        Session on {selectedDate.toDateString()}
+                    </h5>
+
+                    {sessions.length ===0 ? (
+                        <p>No sessions scheduled.</p>
+                    ) : (
+                    <ul>
+                        {sessions.map(s => (
+                            <li key={s._id} style={{ marginBottom: 10 }}>
+                                <strong> {s.courseId?.title || 'No course'}</strong> - {s.topic || 'No topic'}
+                                <br />
+                                {new Date(s.startTime).toLocaleTimeString()} to {new Date(s.endTime).toLocaleTimeString()}
+                                <button style={{ marginLeft: 10 }}onClick={()=>openEdit(s)}>Edit</button>
+                            </li>
+                        ))}
+                    </ul>
+                    )}
+                </div>
             </div>
 
-                    {showEdit && <EditSessionModal session={editing} onClose={()=> { setShowEdit(false); fetchSessions(selectedDate); }} />}
+                    {/*EDIT MODAL*/}
+                    {showEdit && (
+                        <EditSessionModal session = {editing} onClose={() => {
+                            setShowEdit(false);
+                            fetchSessions(selectedDate);
+                        }}/>
+                    )}
                  </div>
     );
 

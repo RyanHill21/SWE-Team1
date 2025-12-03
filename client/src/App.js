@@ -1,5 +1,7 @@
-/* Smart Study Planner — app.js 
-*/
+// Studdy Buddy
+
+import Dashboard from "./pages/Dashboard";
+
 const el = (sel) => document.querySelector(sel);
 const els = (sel) => Array.from(document.querySelectorAll(sel));
 
@@ -12,6 +14,13 @@ const views = {
   dashboard: el('#view-dashboard'),
   assignments: el('#view-assignments')
 };
+
+function App(){
+  return <Dashboard />
+}
+
+export default App;
+
 function switchView(key){
   els('.view').forEach(v=>v.classList.remove('active'));
   els('.nav button').forEach(b=>b.classList.remove('active'));
