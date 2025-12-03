@@ -7,8 +7,11 @@ const els = (sel) => Array.from(document.querySelectorAll(sel));
 
 const STORAGE_KEYS = {
   sessions: 'ssp.sessions.v1',
-  assignments: 'ssp.assignments.v1'
+  assignments: 'ssp.assignments.v1',
+  classes: 'ssp.classes.v1'
 };
+
+let classes = load(STORAGE_KEYS.classes, []);
 
 const views = {
   dashboard: el('#view-dashboard'),
@@ -92,8 +95,9 @@ function prioritizeTasks(assignments){
 }
 
 el('#btn-auto-schedule').addEventListener('click', generateSchedule);
+
 function generateSchedule() {
-  if(assignments.length === 0){
+  if (assignments.length === 0) {
     alert('No assignments to schedule!');
     return;
   }
@@ -102,10 +106,11 @@ function generateSchedule() {
 
   const scheduleList = el('#schedule-list');
   scheduleList.innerHTML = '';
-  
+
   sortedAssignments.forEach(task => {
+    const est = task.estimatedMinutes ? ` — ${task.estimatedMinutes} min` : '';
     const li = document.createElement('li');
-    li.textContent = `${task.course}: ${task.title} — ${task.estimatedMinutes || 50} min`;
+    li.textContent = `${task.course}: ${task.title}${est}`;
     scheduleList.appendChild(li);
   });
 }
@@ -136,6 +141,94 @@ function renderSessions(){
     btn.addEventListener('click', ()=> deleteSession(btn.dataset.id));
   });
 }
+
+
+function renderClasses() {
+  const tbody = el('#classes-table tbody'); // make sure your table exists
+  tbody.innerHTML = '';
+  classes.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(c.name)}</td>
+      <td>${escapeHtml(c.instructor || '')}</td>
+      <td><button data-id="${c.id}" class="danger small">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll('button.danger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      classes = classes.filter(c => c.id !== btn.dataset.id);
+      save(STORAGE_KEYS.classes, classes);
+      renderClasses(); 
+    });
+  });
+}
+
+function renderAssignments() {
+  const tbody = el('#assignments-table tbody');
+  tbody.innerHTML = '';
+  
+  assignments.forEach(a => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(a.title)}</td>
+      <td>${escapeHtml(a.course || '')}</td>
+      <td>${a.due}</td>
+      <td>${a.difficulty || 3}</td>
+      <td>${a.estimatedMinutes ? a.estimatedMinutes + ' min' : '—'}</td>
+      <td><button data-id="${a.id}" class="danger small">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll('button.danger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      assignments = assignments.filter(a => a.id !== btn.dataset.id);
+      save(STORAGE_KEYS.assignments, assignments);
+      renderAssignments();
+    });
+  });
+}
+
+el('#assignment-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const title = el('#assignment-title').value.trim();
+  const course = el('#assignment-course').value.trim();
+  const due = el('#assignment-due').value;
+  if (!title || !due) return alert('Title and Due Date are required');
+
+  const estimatedMinutes = parseInt(el('#assignment-estimate').value, 10) || null;
+
+  const newAssignment = {
+    id: uid(),
+    title,
+    course,
+    due,
+    difficulty: parseInt(el('#assignment-difficulty').value, 10) || 3,
+    estimatedMinutes: estimatedMinutes
+  };
+
+  assignments.unshift(newAssignment);
+  save(STORAGE_KEYS.assignments, assignments);
+  renderAssignments();
+  el('#assignment-form').reset();
+});
+
+el('#class-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = el('#class-name').value.trim();
+  const instructor = el('#class-instructor').value.trim();
+  if (!name) return alert('Course Name is required');
+
+  const newClass = { id: uid(), name, instructor };
+  classes.unshift(newClass);
+  save(STORAGE_KEYS.classes, classes);
+  renderClasses();
+  el('#class-form').reset();
+});
+
+
 function escapeHtml(str=''){ return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
 function renderStats(){
@@ -211,9 +304,11 @@ function drawPlaceholderChart(){
 function init(){
   renderSessions();
   renderStats();
+  renderClasses();
+  renderAssignments();
   refreshInsights();
   drawPlaceholderChart();
 }
 init();
 
-window.__SSP__ = { sessions, assignments, refreshInsights };
+window.__SSP__ = { sessions, assignments, classes, refreshInsights };
