@@ -1,0 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #6495ED/*#f2f2f2*/;
+}
+
+.login-container {
+  background: #fff;
+  width: 350px;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.btn {
+  width: 100%;
+  background: #0000CD;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background: #0000B0;
+}
+
+.signup-text {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.signup-text a {
+  color: #0000CD;
+  text-decoration: none;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* Spinner styles */
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4285f4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.logging-text {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+
+ /* eyeball style */
+.password-group {
+  position: relative;
+}
+
+/* The input itself */
+.password-group input {
+  width: 100%;
+  padding-right: 40px; /* space for the eye */
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.2;
+  height: 40px; /* standardize height */
+}
+
+/* Eye icon */
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 63%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #666;
+  user-select: none;
+  height: 24px; /* matches approx text height */
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* error style */
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
